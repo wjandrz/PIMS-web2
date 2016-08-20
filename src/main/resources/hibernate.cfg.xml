@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- Configuration Settings -->
+		<property name="hibernate.connection.driver_class">
+			oracle.jdbc.OracleDriver
+		</property>
+		<property name="hibernate.connection.url">
+			jdbc:oracle:thin:@orcl.cqcubxoiyvyn.us-west-2.rds.amazonaws.com:1521:orcl
+		</property>
+		<property name="hibernate.connection.username">
+			pgzebron
+		</property>
+		<property name="hibernate.connection.password">
+			wazpPIMS
+		</property>
+		<property name="hibernate.connection.pool_size">
+			20
+		</property>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.Oracle10gDialect
+		</property>
+		<property name="hibernate.hbm2ddl.auto">
+			update
+		</property>
+		
+		<mapping class="com.revature.beans.Address"/> <!-- annotated JavaBean -->
+		<mapping class="com.revature.beans.Client"/> 
+		<mapping class="com.revature.beans.ClientType"/>
+		<mapping class="com.revature.beans.POLine"/> 
+<!-- 		<mapping class="com.revature.beans.POCompKey"/>  -->
+		<mapping class="com.revature.beans.Product"/>
+		<mapping class="com.revature.beans.PurchaseOrder"/>
+		<mapping class="com.revature.beans.StateAbbrv"/> 
+		
+	</session-factory>
+</hibernate-configuration>
