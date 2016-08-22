@@ -33,7 +33,8 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	@RequestMapping(value="createClient.do", method=RequestMethod.GET)
 	public String setNewClient(HttpServletRequest req){
 		ApplicationContext atxt = new ClassPathXmlApplicationContext("applicationContext.xml");
-		req.setAttribute("newClient", new Client());
+		Client client = (Client) atxt.getBean("waffles");
+		req.setAttribute("newClient", client);
 		StateAbbrvDAO sadao = new StateAbbrvDAO(session);
 		req.setAttribute("saabb", sadao.getStateAbbrv());
 		return "updateclient";
