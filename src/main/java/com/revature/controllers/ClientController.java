@@ -33,7 +33,7 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	public String setNewClient(HttpServletRequest req){
 		StateAbbrvDAO sadao = new StateAbbrvDAO(session);
 		req.setAttribute("newClient", new Client());
-		//req.setAttribute("saabb", sadao.getStateAbbrv());
+		req.setAttribute("saabb", sadao.getStateAbbrv());
 		return "updateclient";
 	}
 	

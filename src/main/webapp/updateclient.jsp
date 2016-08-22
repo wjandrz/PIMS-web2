@@ -47,7 +47,7 @@
 							<form:input type="text" path="pointOfContactName" placeholder="Point of Contact Name" required="true" /> <br />
 							<form:input type="text" path="clientPhone" placeholder="Phone Number" required="true" /> <br />
 							<form:input type="text" path="clientFax" placeholder="Fax" required="true" /> <br />
-							<!-- <form:input type="text" path="addressId.streetAddress1" placeholder="Street Address 1" required="true" /> <br />
+							<form:input type="text" path="addressId.streetAddress1" placeholder="Street Address 1" required="true" /> <br />
 							<form:input type="text" path="addressId.streetAddress2" placeholder="Street Address 2" required="true" /> <br />
 							<form:input type="text" path="addressId.addressCity" placeholder="City" required="true" /> <br />
 							<form:select path="addressId.stateId" required="true">
@@ -56,7 +56,7 @@
 								</c:forEach>
 							</form:select>
 							<br />
-							<form:input type="text" path="addressId.addressZip" placeholder="ZIP" required="true" /> <br /> -->
+							<form:input type="text" path="addressId.addressZip" placeholder="ZIP" required="true" /> <br />
 							<select>
 								<option value="1">Supplier</option>
 								<option value="2">Retailer</option>
