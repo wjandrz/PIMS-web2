@@ -40,24 +40,23 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">New Client</h4>
 					</div>
-					<form:form action="addClient.do" method="post" commandName="newClient">
 						<div class="modal-body">
-							<form:input type="text" path="clientName" placeholder="Name" required="true" /> <br />
-							<form:input type="text" path="clientEmail" placeholder="Email" required="true" /> <br />
-							<form:input type="text" path="pointOfContactName" placeholder="Point of Contact Name" required="true" /> <br />
-							<form:input type="text" path="clientPhone" placeholder="Phone Number" required="true" /> <br />
-							<form:input type="text" path="clientFax" placeholder="Fax" required="true" /> <br />
-							<form:input type="text" path="addressId.streetAddress1" placeholder="Street Address 1" required="true" /> <br />
-							<form:input type="text" path="addressId.streetAddress2" placeholder="Street Address 2" required="true" /> <br />
-							<form:input type="text" path="addressId.addressCity" placeholder="City" required="true" /> <br />
-							<form:select path="addressId.stateId" required="true">
-								<c:forEach var="t" items="saabb">
-									<form:option value="${t.abbrvId}"><c:out value="${t.stateAbbrv}"/></form:option>
+							<input type="text" id="clientName" placeholder="Name" required="true" /> <br />
+							<input type="text" id="clientEmail" placeholder="Email" required="true" /> <br />
+							<input type="text" id="pointOfContactName" placeholder="Point of Contact Name" required="true" /> <br />
+							<input type="text" id="clientPhone" placeholder="Phone Number" required="true" /> <br />
+							<input type="text" id="clientFax" placeholder="Fax" required="true" /> <br />
+							<input type="text" id="streetAddress1" placeholder="Street Address 1" required="true" /> <br />
+							<input type="text" id="streetAddress2" placeholder="Street Address 2" required="true" /> <br />
+							<input type="text" id="addressCity" placeholder="City" required="true" /> <br />
+							<select id="stateId" required="true">
+								<c:forEach var="t" items="${saabb}">
+									<option value="${t.abbrvId}"><c:out value="${t.stateAbbrv}"/></option>
 								</c:forEach>
-							</form:select>
+							</select>
 							<br />
-							<form:input type="text" path="addressId.addressZip" placeholder="ZIP" required="true" /> <br />
-							<select>
+							<input type="text" id="addressZip" placeholder="ZIP" required="true" /> <br />
+							<select id="type" required="true">
 								<option value="1">Supplier</option>
 								<option value="2">Retailer</option>
 							</select>
@@ -66,7 +65,6 @@
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							<button type="submit" class="btn btn-success">Add</button>
 						</div>
-					</form:form>
 				</div>
 			</div>
 	</div>

@@ -17,11 +17,8 @@ public class StateAbbrvDAO {
 	}
 	
 	public List<StateAbbrv> getStateAbbrv(){
-		/*Query query = session.createQuery("From StateAbbrv");
-		return query.list();*/
-		Criteria query = session.createCriteria(StateAbbrv.class);
-		List<StateAbbrv> stateAbrr = query.list();
-		return stateAbrr;
+		Query query = session.createQuery("From StateAbbrv");
+		return query.list();
 	}
 	public StateAbbrv getStateAbbrvbyId(StateAbbrv stateAbbrv){
 		Query query = session.createQuery("From StateAbbrv Where abbrvId = :id");
