@@ -11,6 +11,8 @@ import javax.validation.Valid;
 import org.hibernate.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.revature.PIMS.SessionFactoryManager;
 import com.revature.beans.Client;
-import com.revature.beans.StateAbbrv;
 import com.revature.database.StateAbbrvDAO;
 
 @Controller
@@ -31,8 +32,9 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	
 	@RequestMapping(value="createClient.do", method=RequestMethod.GET)
 	public String setNewClient(HttpServletRequest req){
-		StateAbbrvDAO sadao = new StateAbbrvDAO(session);
+		ApplicationContext atxt = new ClassPathXmlApplicationContext("applicationContext.xml");
 		req.setAttribute("newClient", new Client());
+		StateAbbrvDAO sadao = new StateAbbrvDAO(session);
 		req.setAttribute("saabb", sadao.getStateAbbrv());
 		return "updateclient";
 	}

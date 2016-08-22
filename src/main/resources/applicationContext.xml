@@ -6,4 +6,14 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        
+        <bean name="waffles" class="com.revature.beans.Client">
+        	<property name="addressId" ref="waffle"></property>
+        	<property name="clientTypeId" ref="waffly"></property>
+        </bean>
+        <bean name="waffle" class="com.revature.beans.Address">
+        	<property name="stateId" ref="state"></property>
+        </bean>
+        <bean name="state" class="com.revature.beans.StateAbbrv" />
+        <bean name="waffly" class="com.revature.beans.ClientType" />
 </beans>
