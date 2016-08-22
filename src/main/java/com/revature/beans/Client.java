@@ -90,5 +90,6 @@ public class Client {
 	}
 	public Client() {
 		super();
+		this.addressId = new Address();
 	}
 }
