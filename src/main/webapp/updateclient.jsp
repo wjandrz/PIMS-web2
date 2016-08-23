@@ -76,33 +76,17 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Update a Supplier</h4>
 					</div>
-					<form action="" method="post">
 						<div class="modal-body">
-							<table>
-								<thead>
+							<table id="suppliers">
 									<tr>
 										<th>Client Name</th>
 									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<input type="radio" name="supplyName" value="1" checked>Raid<br>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<input type="radio" name="supplyName" value="2" checked>Ortho<br>
-										</td>
-									</tr>
-								</tbody>
 							</table>
 						</div>
 						<div class="modal-footer">
+							<input id="" type="button" class="btn btn-success" value="Update" />
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-success">Update</button>
 						</div>
-					</form>
 				</div>
 			</div>
 	</div>
@@ -155,6 +139,25 @@ $(document).ready(function(){
     $("#myBtn").click(function(){
         $("#updateRetailer").modal();
     });
+});
+$(document).ready(function(){
+	setInterval(function(){
+		$.ajax({
+			// accepts application/json
+			headers: {          
+	    		Accept : "application/json; charset=utf-8"
+    		}, 
+			url: "http://localhost:7001/PIMS-web2/showSupplier.do",
+			method: "GET",
+			success: function(resp){
+				$("#suppliers").html("<tr><th>Client Name</th></tr>");
+				$.each(resp, function(i, item){
+					$("#suppliers").append(
+					"<tr><td><input type='radio' name='supplyName' value='"+item.clientId+"' checked>"+item.clientName+"</td></tr>");
+				});
+			}
+		});
+	}, 2000);
 });
 $(document).ready(function(){
     $("#add").click(function(){

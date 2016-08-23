@@ -24,6 +24,7 @@ import com.revature.beans.ClientType;
 import com.revature.beans.StateAbbrv;
 import com.revature.beans.newClient;
 import com.revature.database.AddressDAO;
+import com.revature.database.ClientDAO;
 import com.revature.database.ClientTypeDAO;
 import com.revature.database.DataLayer;
 import com.revature.database.StateAbbrvDAO;
@@ -35,6 +36,7 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	private ServletContext servletContext; // instance var
 	Session session = SessionFactoryManager.getInstance().openSession();
 	StateAbbrvDAO sadao = new StateAbbrvDAO(session);
+	ClientDAO cdao = new ClientDAO(session);
 	ClientTypeDAO ctdao = new ClientTypeDAO(session);
 	AddressDAO adao = new AddressDAO(session);
 	
@@ -63,6 +65,11 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 		Client obj = new Client( client.getClientName(), client.getClientEmail(), client.getPointOfContactName(), 
 				client.getClientPhone(), client.getClientFax(), newAddress, clientType);
 		dataServiceLayer.createRecord(obj);
+	}
+	@RequestMapping(method=RequestMethod.GET, value="showSupplier.do", produces="application/json")
+	@ResponseBody
+	public List<Client> showSuppliers(){
+		return cdao.getClientsbySupply();
 	}
 	/*public ModelAndView addClient(
 			@Valid Client newClient ,
