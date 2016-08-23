@@ -1,8 +1,6 @@
 package com.revature.app;
 
-import java.util.Date;
-
-import com.revature.beans.StateAbbrv;
+import com.revature.beans.ClientType;
 import com.revature.database.DataLayer;
 
 
@@ -23,13 +21,15 @@ import com.revature.database.DataLayer;
 //				"NC","ND", "OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"};
 //		
 //		DataLayer dataServiceLayer =  new DataLayer();
+		
+//		ClientType obj = new ClientType(0, "Supplier");
 //		
 //		for(int i=0; i<stateArr.length; i++){
 //			int j=i+1;
 //			StateAbbrv obj = new StateAbbrv(j, stateArr[i], abbrv[i]);
 //			dataServiceLayer.createRecord(obj);
 //		}
-//		
-//		
+		
+		
 //	}
 //}

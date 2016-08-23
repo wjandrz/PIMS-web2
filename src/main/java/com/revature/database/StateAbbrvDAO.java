@@ -20,9 +20,9 @@ public class StateAbbrvDAO {
 		Query query = session.createQuery("From StateAbbrv");
 		return query.list();
 	}
-	public StateAbbrv getStateAbbrvbyId(StateAbbrv stateAbbrv){
+	public StateAbbrv getStateAbbrvbyId(int id){
 		Query query = session.createQuery("From StateAbbrv Where abbrvId = :id");
-		query.setParameter("id", stateAbbrv.getAbbrvId());
+		query.setParameter("id", id);
 		return (StateAbbrv) query.uniqueResult();
 	}
 }

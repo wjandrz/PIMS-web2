@@ -1,10 +1,11 @@
 package com.revature.database;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.revature.beans.Address;
-import com.revature.beans.Client;
 
 public class AddressDAO {
 	
@@ -14,10 +15,11 @@ public class AddressDAO {
 		this.session = session;
 	}
 
-	public Address getAddress(Address address){
-		Query query = session.createQuery("FROM Address WHERE addressId = :id");
-		query.setParameter("id", address.getAddressId());
-		return (Address) query.uniqueResult();
+	public Address getAddress(String streetAddress1){
+		Query query = session.createQuery("FROM Address WHERE streetAddress1 = :street1");
+		query.setParameter("street1", streetAddress1);
+		List<Address> add = (List<Address>) query.list();
+		return add.get(0);
 	}
 	public void insert(Address address){
 		session.save(address);

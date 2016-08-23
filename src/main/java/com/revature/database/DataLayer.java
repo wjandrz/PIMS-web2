@@ -25,6 +25,7 @@ public class DataLayer {
 			dao.insert(obj); 
 			tx.commit(); 
 		}catch(Throwable t){
+			t.printStackTrace();
 			tx.rollback();
 		}
 	}

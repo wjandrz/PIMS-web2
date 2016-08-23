@@ -6,21 +6,26 @@ import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.revature.PIMS.SessionFactoryManager;
+import com.revature.beans.Address;
 import com.revature.beans.Client;
+import com.revature.beans.ClientType;
+import com.revature.beans.StateAbbrv;
+import com.revature.beans.newClient;
+import com.revature.database.AddressDAO;
+import com.revature.database.ClientTypeDAO;
+import com.revature.database.DataLayer;
 import com.revature.database.StateAbbrvDAO;
 
 @Controller
@@ -29,19 +34,37 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	@Autowired
 	private ServletContext servletContext; // instance var
 	Session session = SessionFactoryManager.getInstance().openSession();
+	StateAbbrvDAO sadao = new StateAbbrvDAO(session);
+	ClientTypeDAO ctdao = new ClientTypeDAO(session);
+	AddressDAO adao = new AddressDAO(session);
 	
 	@RequestMapping(value="createClient.do", method=RequestMethod.GET)
 	public String setNewClient(HttpServletRequest req){
 		//ApplicationContext atxt = new ClassPathXmlApplicationContext("applicationContext.xml");
 		//Client client = (Client) atxt.getBean("waffles");
 		//req.setAttribute("newClient", client);
-		StateAbbrvDAO sadao = new StateAbbrvDAO(session);
 		req.setAttribute("saabb", sadao.getStateAbbrv());
+		req.setAttribute("clientt", ctdao.getClientType());
 		return "updateclient";
 	}
 	
-	@RequestMapping(value="addClient.do", method=RequestMethod.POST)
-	public ModelAndView addClient(
+	@RequestMapping(value="addClient.do", method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public void addClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+
+		DataLayer dataServiceLayer =  new DataLayer();
+		int stateId = client.getNewState();
+		int clienttypeId = client.getNewType();
+		StateAbbrv sa = new StateAbbrv(stateId, sadao.getStateAbbrvbyId(stateId).getStateName(), sadao.getStateAbbrvbyId(stateId).getStateAbbrv());
+		Address address = new Address(client.getNewAddress1(), client.getNewAddress2(), client.getNewCity(), sa, client.getNewZip());
+		dataServiceLayer.createRecord(address);
+		Address newAddress = adao.getAddress(client.getNewAddress1());
+		ClientType clientType = new ClientType(clienttypeId, ctdao.getClientTypebyId(clienttypeId).getClientType());
+		Client obj = new Client( client.getClientName(), client.getClientEmail(), client.getPointOfContactName(), 
+				client.getClientPhone(), client.getClientFax(), newAddress, clientType);
+		dataServiceLayer.createRecord(obj);
+	}
+	/*public ModelAndView addClient(
 			@Valid Client newClient ,
 			HttpServletRequest req, 
 			HttpServletResponse resp){
@@ -56,7 +79,7 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 		mv.addObject("success", "Successfully added client!"); // request-scoped variables
 		
 		return mv;
-	}
+	}*/
 
 	@Override
 	public void afterPropertiesSet() throws Exception {

@@ -42,6 +42,9 @@ public class Client {
 	public int getClientId() {
 		return clientId;
 	}
+	public void setClientEmail(String clientEmail) {
+		this.clientEmail = clientEmail;
+	}
 	public void setClientId(int clientId) {
 		this.clientId = clientId;
 	}
@@ -91,6 +94,27 @@ public class Client {
 			String clientFax, Address addressId, ClientType clientTypeId) {
 		super();
 		this.clientId = clientId;
+		this.clientName = clientName;
+		this.clientEmail = clientEmail;
+		this.pointOfContactName = pointOfContactName;
+		this.clientPhone = clientPhone;
+		this.clientFax = clientFax;
+		this.addressId = addressId;
+		this.clientTypeId = clientTypeId;
+	}
+	public Client(String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+			String clientFax) {
+		super();
+		this.clientName = clientName;
+		this.clientEmail = clientEmail;
+		this.pointOfContactName = pointOfContactName;
+		this.clientPhone = clientPhone;
+		this.clientFax = clientFax;
+	}
+	
+	public Client(String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+			String clientFax, Address addressId, ClientType clientTypeId) {
+		super();
 		this.clientName = clientName;
 		this.clientEmail = clientEmail;
 		this.pointOfContactName = pointOfContactName;

@@ -38,6 +38,12 @@ public class Address {
 	public String getStreetAddress2() {
 		return streetAddress2;
 	}
+	@Override
+	public String toString() {
+		return "Address [addressId=" + addressId + ", streetAddress1=" + streetAddress1 + ", streetAddress2="
+				+ streetAddress2 + ", addressCity=" + addressCity + ", stateId=" + stateId + ", addressZip="
+				+ addressZip + "]";
+	}
 	public void setStreetAddress2(String streetAddress2) {
 		this.streetAddress2 = streetAddress2;
 	}
@@ -63,6 +69,15 @@ public class Address {
 			String addressZip) {
 		super();
 		this.addressId = addressId;
+		this.streetAddress1 = streetAddress1;
+		this.streetAddress2 = streetAddress2;
+		this.addressCity = addressCity;
+		this.stateId = stateId;
+		this.addressZip = addressZip;
+	}
+	public Address(String streetAddress1, String streetAddress2, String addressCity, StateAbbrv stateId,
+			String addressZip) {
+		super();
 		this.streetAddress1 = streetAddress1;
 		this.streetAddress2 = streetAddress2;
 		this.addressCity = addressCity;

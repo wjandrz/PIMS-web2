@@ -57,13 +57,14 @@
 							<br />
 							<input type="text" id="addressZip" placeholder="ZIP" required="true" /> <br />
 							<select id="type" required="true">
-								<option value="1">Supplier</option>
-								<option value="2">Retailer</option>
+								<c:forEach var="t" items="${clientt}">
+									<option value="${t.clientTypeId}"><c:out value="${t.clientType}"/></option>
+								</c:forEach>
 							</select>
 						</div>
 						<div class="modal-footer">
+							<input id="add" type="button" class="btn btn-success" value="Add"/>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<input type="submit" class="btn btn-success" value="Add"/>
 						</div>
 				</div>
 			</div>
@@ -143,7 +144,7 @@
 			</div>
 	</div>
 	</div>
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
     $("#myBtn").click(function(){
         $("#newModal").modal();
@@ -154,6 +155,47 @@ $(document).ready(function(){
     $("#myBtn").click(function(){
         $("#updateRetailer").modal();
     });
+});
+$(document).ready(function(){
+    $("#add").click(function(){
+		var name = $("#clientName").val();
+		var email = $("#clientEmail").val();
+		var contactName = $("#pointOfContactName").val();
+		var phone = $("#clientPhone").val();
+		var fax = $("#clientFax").val();
+		var address1 = $("#streetAddress1").val();
+		var address2 = $("#streetAddress2").val();
+		var city = $("#addressCity").val();
+		var state = $("#stateId").val();
+		var zip = $("#addressZip").val();
+		var type = $("#type").val();
+		//reset form
+		$("#clientName").val("");
+		$("#clientEmail").val("");
+		$("#pointOfContactName").val("");
+		$("#clientPhone").val("");
+		$("#clientFax").val("");
+		$("#streetAddress1").val("");
+		$("#streetAddress2").val("");
+		$("#addressCity").val("");
+		$("#addressZip").val("");
+		
+		$.ajax({
+			// contentType application/json
+			headers: {          
+    			"Content-Type": "application/json; charset=utf-8"
+    		},
+			url: "http://localhost:7001/PIMS-web2/addClient.do",
+			method: "POST",
+			data: JSON.stringify({
+				clientName : name, clientEmail : email, pointOfContactName : contactName, clientPhone : phone, clientFax : fax, newAddress1 : address1, newAddress2 : address2, newCity : city, newState : state, newZip : zip, newType : type 
+			}),
+			success: function(){
+				alert("Added person successfully!");
+			}
+		});
+		
+	});
 });
 </script>
 </body>

@@ -12,7 +12,8 @@ public class DAO {
 
 	public void insert(Object obj){
 		// discrete process
-		session.save(obj);
+		Object here = session.merge(obj);
+		session.save(here);
 	}
 	
 	

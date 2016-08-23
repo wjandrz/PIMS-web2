@@ -20,9 +20,9 @@ public class ClientTypeDAO {
 		Query query = session.createQuery("FROM ClientType");
 		return query.list();
 	}
-	public ClientType getClientTypebyId(ClientType clientType){
+	public ClientType getClientTypebyId(int id){
 		Query query = session.createQuery("FROM ClientType Where clientTypeId = :id");
-		query.setParameter("id", clientType.getClientTypeId());
+		query.setParameter("id", id);
 		return (ClientType) query.uniqueResult();
 	}
 	
