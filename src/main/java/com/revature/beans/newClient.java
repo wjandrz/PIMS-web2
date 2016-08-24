@@ -166,6 +166,12 @@ public class newClient {
 		this.newZip = newZip;
 		this.newType = newType;
 	}
+	
+	public newClient(int clientId, int newaddressId) {
+		super();
+		this.clientId = clientId;
+		this.newaddressId = newaddressId;
+	}
 	public newClient() {
 		super();
 	}

@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.revature.beans.Client;
@@ -13,7 +14,7 @@ import com.revature.beans.Client;
 public class ClientDAO {
 	
 	private Session session;
-	private List<Client> clients = new Vector<Client>();
+	//private List<Client> clients = new Vector<Client>();
 	
 	public ClientDAO(Session session){
 		this.session = session;
@@ -48,27 +49,24 @@ public class ClientDAO {
 		return query.list();
 	}
 	public void insert(Client client){
-		session.saveOrUpdate(client);
+		Transaction tx = session.beginTransaction();
+		try{
+			session.saveOrUpdate(client);
+			tx.commit();
+		}catch (Throwable t) {
+			tx.rollback();
+		}
 	}
 	
-	public void update(Client client){
-		Query query = session.createQuery("update Client set clientName = :name, "
-				+ "clientEmail = :email, "
-				+ "pointOfContactName = :pOCN, "
-				+ "clientPhone = :phone, "
-				+ "clientFax = :fax, "
-				+ "where clientName = :name");
-		query.setString("name", client.getClientName());
-		query.setString("email", client.getClientEmail());
-		query.setString("pOCN", client.getPointOfContactName());
-		query.setString("phone", client.getClientPhone());
-		query.setString("fax", client.getClientFax());
-		query.executeUpdate();
-	}
-	
-	public void delete(Client client){
-		Query query = session.createQuery("DELETE Client WHERE clientName = :name");
-		query.setString("name", client.getClientName());
-		query.executeUpdate();
+	public void delete(int id){
+		Transaction tx = session.beginTransaction();
+		try{
+			Query query = session.createQuery("DELETE Client WHERE clientId = :id");
+			query.setInteger("id", id);
+			query.executeUpdate();
+			tx.commit();
+		}catch (Throwable t) {
+			tx.rollback();
+		}
 	}
 }

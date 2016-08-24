@@ -67,6 +67,12 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 				client.getClientPhone(), client.getClientFax(), newAddress, clientType);
 		dataServiceLayer.createRecord(obj);
 	}
+	@RequestMapping(value="removeClient.do", method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public void removeClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+		cdao.delete(client.getClientId());
+		adao.delete(client.getNewaddressId());
+	}
 	@RequestMapping(value="updateClient.do", method=RequestMethod.POST, consumes="application/json")
 	@ResponseBody
 	public void updateClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
@@ -95,13 +101,13 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	}
 	@RequestMapping(method=RequestMethod.GET, value="fillSupplier.do", produces="application/json")
 	@ResponseBody
-	public Client fillSuppliers(@RequestParam(value="id") int id){
-		return cdao.getClientsbyIdSupply(id);
+	public Client fillSuppliers(@RequestParam(value="value") int value){
+		return cdao.getClientsbyIdSupply(value);
 	}
 	@RequestMapping(method=RequestMethod.GET, value="fillRetailer.do", produces="application/json")
 	@ResponseBody
-	public Client fillRetailers(@RequestParam(value="id") int id){
-		return cdao.getClientsbyIdRetail(id);
+	public Client fillRetailers(@RequestParam(value="value") int value){
+		return cdao.getClientsbyIdRetail(value);
 	}
 	/*public ModelAndView addClient(
 			@Valid Client newClient ,

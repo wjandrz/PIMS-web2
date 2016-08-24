@@ -108,7 +108,9 @@
 						</div>
 						<div class="modal-footer">
 							<input id="supdate" type="button" class="btn btn-success" value="Update" />
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input id="smdelete" type="button" class="btn btn-warning" value="Delete" />
+							<input id="sdelete" type="button" class="btn btn-danger" value="Are you Sure?" />
+							<input type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='createClient.do';" value="Close"/>
 						</div>
 				</div>
 			</div>
@@ -152,7 +154,9 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<input class="rupdate" type="button" class="btn btn-success" value="Update" />
+							<input id="rupdate" type="button" class="btn btn-success" value="Update" />
+							<input id="rmdelete" type="button" class="btn btn-warning" value="Delete" />
+							<input id="rdelete" type="button" class="btn btn-danger" value="Are you Sure?" />
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</form>
@@ -179,9 +183,10 @@ $(document).ready(function(){
 			headers: {          
 	    		Accept : "application/json; charset=utf-8"
     		}, 
-			url: "http://localhost:7001/PIMS-web2/fillSupplier.do?id="+$("#suppliers").val(),
+			url: "http://localhost:7001/PIMS-web2/fillSupplier.do?value="+$("#suppliers").val(),
 			method: "GET",
 			success: function(resp){
+				alert("waffles");
 				$("#sclientName").val(resp.clientName);
 				$("#sclientEmail").val(resp.clientEmail);
 				$("#spointOfContactName").val(resp.pointOfContactName);
@@ -196,6 +201,8 @@ $(document).ready(function(){
 				$("#stype").val(resp.clientTypeId.clientTypeId);
 			}
 		});
+		$("#sdelete").hide();
+        $("#smdelete").show();
 	});
 	$("#retailers").change(function(){
 		$.ajax({
@@ -203,7 +210,7 @@ $(document).ready(function(){
 			headers: {          
 	    		Accept : "application/json; charset=utf-8"
     		}, 
-			url: "http://localhost:7001/PIMS-web2/fillRetailer.do?id="+$("#retailers").val(),
+			url: "http://localhost:7001/PIMS-web2/fillRetailer.do?value="+$("#retailers").val(),
 			method: "GET",
 			success: function(resp){
 				$("#rclientName").val(resp.clientName);
@@ -220,10 +227,24 @@ $(document).ready(function(){
 				$("#rtype").val(resp.clientTypeId.clientTypeId);
 			}
 		});
+		$("#rdelete").hide();
+        $("#rmdelete").show();
 	});
 });
 $(document).ready(function(){
 	$("#updateSModal").click(function(){
+		//reset form
+		$("#suppliers").find("option").remove();
+		$("#sclientName").val("");
+		$("#sclientEmail").val("");
+		$("#spointOfContactName").val("");
+		$("#sclientPhone").val("");
+		$("#sclientFax").val("");
+		$("#saddressId").val("");
+		$("#sstreetAddress1").val("");
+		$("#sstreetAddress2").val("");
+		$("#saddressCity").val("");
+		$("#saddressZip").val("");
 		$.ajax({
 			// accepts application/json
 			headers: {          
@@ -238,8 +259,22 @@ $(document).ready(function(){
 				});
 			}
 		});
+		$("#sdelete").hide();
+        $("#smdelete").show();
 	});
 	$("#updateRModal").click(function(){
+		//reset form
+		$("#retailers").find("option").remove();
+		$("#rclientName").val("");
+		$("#rclientEmail").val("");
+		$("#rpointOfContactName").val("");
+		$("#rclientPhone").val("");
+		$("#rclientFax").val("");
+		$("#raddressId").val("");
+		$("#rstreetAddress1").val("");
+		$("#rstreetAddress2").val("");
+		$("#raddressCity").val("");
+		$("#raddressZip").val("");
 		$.ajax({
 			// accepts application/json
 			headers: {          
@@ -251,13 +286,59 @@ $(document).ready(function(){
 				$("#retailers").html("<tr><th>Client Name</th></tr>");
 				$.each(resp, function(i, item){
 					$("#retailers").append(
-					"<option name='retailName' value='"+item.clientId+"' checked>"+item.clientName+"<option>");
+					"<option name='retailName' value='"+item.clientId+"'>"+item.clientName+"</option>");
 				});
 			}
 		});
+		$("#rdelete").hide();
+        $("#rmdelete").show();
 	});
 });
 $(document).ready(function(){
+	$("#smdelete").click(function(){
+		$("#sdelete").show();
+        $("#smdelete").hide();
+	});
+	$("#sdelete").click(function(){
+		var id = $("#suppliers").val();
+		var aid = $("#saddressId").val();
+		$.ajax({
+			// contentType application/json
+			headers: {          
+    			"Content-Type": "application/json; charset=utf-8"
+    		},
+			url: "http://localhost:7001/PIMS-web2/removeClient.do",
+			method: "POST",
+			data: JSON.stringify({
+				 clientId : id, newaddressId : aid
+			}),
+			success: function(){
+				alert("Removed client successfully!");
+			}
+		});
+	});
+	$("#rmdelete").click(function(){
+		$("#rdelete").show();
+        $("#rmdelete").hide();
+	});
+	$("#rdelete").click(function(){
+		var id = $("#retailers").val();
+		var aid = $("#raddressId").val();
+		$.ajax({
+			// contentType application/json
+			headers: {          
+    			"Content-Type": "application/json; charset=utf-8"
+    		},
+			url: "http://localhost:7001/PIMS-web2/removeClient.do",
+			method: "POST",
+			data: JSON.stringify({
+				 clientId : id, newaddressId : aid
+			}),
+			success: function(){
+				alert("Removed client successfully!");
+			}
+		});
+	});
     $("#add").click(function(){
 		var name = $("#clientName").val();
 		var email = $("#clientEmail").val();
