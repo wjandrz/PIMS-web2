@@ -186,7 +186,6 @@ $(document).ready(function(){
 			url: "http://localhost:7001/PIMS-web2/fillSupplier.do?value="+$("#suppliers").val(),
 			method: "GET",
 			success: function(resp){
-				alert("waffles");
 				$("#sclientName").val(resp.clientName);
 				$("#sclientEmail").val(resp.clientEmail);
 				$("#spointOfContactName").val(resp.pointOfContactName);
@@ -283,7 +282,6 @@ $(document).ready(function(){
 			url: "http://localhost:7001/PIMS-web2/showRetailer.do",
 			method: "GET",
 			success: function(resp){
-				$("#retailers").html("<tr><th>Client Name</th></tr>");
 				$.each(resp, function(i, item){
 					$("#retailers").append(
 					"<option name='retailName' value='"+item.clientId+"'>"+item.clientName+"</option>");

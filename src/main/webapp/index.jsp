@@ -26,7 +26,7 @@
 	<input type="button" onclick="location.href='createClient.do';" value="Clients" />
 	</div>
 	<div class="col-xs-6">
-	<input type="button" onclick="location.href='updateclient.jsp';" value="Clients" />
+	<input type="button" onclick="location.href='invoice.jsp';" value="Invoice" />
 	</div>
 	<div class="col-xs-6">
 	<input type="button" onclick="location.href='updateclient.jsp';" value="Clients" />
