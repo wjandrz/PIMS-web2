@@ -22,7 +22,7 @@ public class AddressDAO {
 		return add.get(0);
 	}
 	public void insert(Address address){
-		session.save(address);
+		session.saveOrUpdate(address);
 	}
 	public void update(Address address){
 		Query query = session.createQuery("update Address set streetAddress1 = :sa1, "

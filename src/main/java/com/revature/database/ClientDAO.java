@@ -3,10 +3,11 @@ package com.revature.database;
 import java.util.List;
 import java.util.Vector;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
-import com.revature.beans.Address;
 import com.revature.beans.Client;
 
 public class ClientDAO {
@@ -22,24 +23,24 @@ public class ClientDAO {
 		Query query = session.createQuery("from Client");
 		return query.list();
 	}
-	public List<Client> getClientsbyNameSupply(String name){
-		Query query = session.createQuery("FROM Client WHERE clientName = :name"
+	public Client getClientsbyIdSupply(int id){
+		Query query = session.createQuery("FROM Client WHERE clientId = :id "
 				+ "AND clientTypeId = :type");
-		query.setString("name", name);
+		query.setInteger("id", id);
 		query.setInteger("type", 1);
-		return query.list();
+		return (Client) query.uniqueResult();
 	}
 	public List<Client> getClientsbySupply(){
 		Query query = session.createQuery("FROM Client WHERE clientTypeId = :type");
 		query.setInteger("type", 1);
 		return query.list();
 	}
-	public List<Client> getClientsbyNameRetail(String name){
-		Query query = session.createQuery("FROM Client WHERE clientName = :name"
+	public Client getClientsbyIdRetail(int id){
+		Query query = session.createQuery("FROM Client WHERE clientId = :id "
 				+ "AND clientTypeId = :type");
-		query.setString("name", name);
+		query.setInteger("id", id);
 		query.setInteger("type", 2);
-		return query.list();
+		return (Client) query.uniqueResult();
 	}
 	public List<Client> getClientsbyRetail(){
 		Query query = session.createQuery("FROM Client WHERE clientTypeId = :type");
@@ -47,7 +48,7 @@ public class ClientDAO {
 		return query.list();
 	}
 	public void insert(Client client){
-		session.save(client);
+		session.saveOrUpdate(client);
 	}
 	
 	public void update(Client client){

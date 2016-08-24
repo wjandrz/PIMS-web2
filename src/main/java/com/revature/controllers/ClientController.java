@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 
@@ -62,7 +63,23 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 		dataServiceLayer.createRecord(address);
 		Address newAddress = adao.getAddress(client.getNewAddress1());
 		ClientType clientType = new ClientType(clienttypeId, ctdao.getClientTypebyId(clienttypeId).getClientType());
-		Client obj = new Client( client.getClientName(), client.getClientEmail(), client.getPointOfContactName(), 
+		Client obj = new Client(client.getClientName(), client.getClientEmail(), client.getPointOfContactName(), 
+				client.getClientPhone(), client.getClientFax(), newAddress, clientType);
+		dataServiceLayer.createRecord(obj);
+	}
+	@RequestMapping(value="updateClient.do", method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public void updateClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+
+		DataLayer dataServiceLayer =  new DataLayer();
+		int stateId = client.getNewState();
+		int clienttypeId = client.getNewType();
+		StateAbbrv sa = new StateAbbrv(stateId, sadao.getStateAbbrvbyId(stateId).getStateName(), sadao.getStateAbbrvbyId(stateId).getStateAbbrv());
+		Address address = new Address(client.getNewaddressId(), client.getNewAddress1(), client.getNewAddress2(), client.getNewCity(), sa, client.getNewZip());
+		dataServiceLayer.createRecord(address);
+		Address newAddress = adao.getAddress(client.getNewAddress1());
+		ClientType clientType = new ClientType(clienttypeId, ctdao.getClientTypebyId(clienttypeId).getClientType());
+		Client obj = new Client(client.getClientId(), client.getClientName(), client.getClientEmail(), client.getPointOfContactName(), 
 				client.getClientPhone(), client.getClientFax(), newAddress, clientType);
 		dataServiceLayer.createRecord(obj);
 	}
@@ -70,6 +87,21 @@ public class ClientController  implements ServletContextAware, InitializingBean 
 	@ResponseBody
 	public List<Client> showSuppliers(){
 		return cdao.getClientsbySupply();
+	}
+	@RequestMapping(method=RequestMethod.GET, value="showRetailer.do", produces="application/json")
+	@ResponseBody
+	public List<Client> showRetailers(){
+		return cdao.getClientsbyRetail();
+	}
+	@RequestMapping(method=RequestMethod.GET, value="fillSupplier.do", produces="application/json")
+	@ResponseBody
+	public Client fillSuppliers(@RequestParam(value="id") int id){
+		return cdao.getClientsbyIdSupply(id);
+	}
+	@RequestMapping(method=RequestMethod.GET, value="fillRetailer.do", produces="application/json")
+	@ResponseBody
+	public Client fillRetailers(@RequestParam(value="id") int id){
+		return cdao.getClientsbyIdRetail(id);
 	}
 	/*public ModelAndView addClient(
 			@Valid Client newClient ,

@@ -62,6 +62,7 @@ public class newClient {
 		public void setClientTypeId(ClientType clientTypeId) {
 			this.clientTypeId = clientTypeId;
 		}
+	private int newaddressId;
 	private String newAddress1;
 	private String newAddress2;
 	private String newCity;
@@ -69,6 +70,12 @@ public class newClient {
 	private String newZip;
 	private int newType;
 	
+	public int getNewaddressId() {
+		return newaddressId;
+	}
+	public void setNewaddressId(int newaddressId) {
+		this.newaddressId = newaddressId;
+	}
 	public String getNewAddress1() {
 		return newAddress1;
 	}
@@ -115,6 +122,43 @@ public class newClient {
 		this.pointOfContactName = pointOfContactName;
 		this.clientPhone = clientPhone;
 		this.clientFax = clientFax;
+		this.newAddress1 = newAddress1;
+		this.newAddress2 = newAddress2;
+		this.newCity = newCity;
+		this.newState = newState;
+		this.newZip = newZip;
+		this.newType = newType;
+	}
+	public newClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+			String clientFax, Address addressId, ClientType clientTypeId, String newAddress1, String newAddress2,
+			String newCity, int newState, String newZip, int newType) {
+		super();
+		this.clientId = clientId;
+		this.clientName = clientName;
+		this.clientEmail = clientEmail;
+		this.pointOfContactName = pointOfContactName;
+		this.clientPhone = clientPhone;
+		this.clientFax = clientFax;
+		this.addressId = addressId;
+		this.clientTypeId = clientTypeId;
+		this.newAddress1 = newAddress1;
+		this.newAddress2 = newAddress2;
+		this.newCity = newCity;
+		this.newState = newState;
+		this.newZip = newZip;
+		this.newType = newType;
+	}
+	
+	public newClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+			String clientFax, int newaddressId, String newAddress1,	String newAddress2, String newCity, int newState, String newZip, int newType) {
+		super();
+		this.clientId = clientId;
+		this.clientName = clientName;
+		this.clientEmail = clientEmail;
+		this.pointOfContactName = pointOfContactName;
+		this.clientPhone = clientPhone;
+		this.clientFax = clientFax;
+		this.newaddressId = newaddressId;
 		this.newAddress1 = newAddress1;
 		this.newAddress2 = newAddress2;
 		this.newCity = newCity;

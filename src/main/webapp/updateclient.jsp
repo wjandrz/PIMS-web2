@@ -26,10 +26,10 @@
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newModal">
 		New Client
 	</button>
-	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#updateSupplier">
+	<button type="button" id="updateSModal" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#updateSupplier">
 		Update/Delete Supplier
 	</button>
-	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#updateRetailer">
+	<button type="button" id="updateRModal" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#updateRetailer">
 		Update/Delete Retailer
 	</button>
 
@@ -77,14 +77,37 @@
 					<h4 class="modal-title" id="myModalLabel">Update a Supplier</h4>
 					</div>
 						<div class="modal-body">
-							<table id="suppliers">
-									<tr>
-										<th>Client Name</th>
-									</tr>
-							</table>
+							<div>
+								Client Name
+								<select id="suppliers">
+								</select><br />
+							</div>
+							<div>
+								<input type="text" id="sclientName" placeholder="Name" required="true" /> <br />
+								<input type="text" id="sclientEmail" placeholder="Email" required="true" /> <br />
+								<input type="text" id="spointOfContactName" placeholder="Point of Contact Name" required="true" /> <br />
+								<input type="text" id="sclientPhone" placeholder="Phone Number" required="true" /> <br />
+								<input type="text" id="sclientFax" placeholder="Fax" required="true" /> <br />
+								<input type="hidden" id="saddressId" />
+								<input type="text" id="sstreetAddress1" placeholder="Street Address 1" required="true" /> <br />
+								<input type="text" id="sstreetAddress2" placeholder="Street Address 2" required="true" /> <br />
+								<input type="text" id="saddressCity" placeholder="City" required="true" /> <br />
+								<select id="sstateId" required="true">
+									<c:forEach var="t" items="${saabb}">
+										<option value="${t.abbrvId}"><c:out value="${t.stateAbbrv}"/></option>
+									</c:forEach>
+								</select>
+								<br />
+								<input type="text" id="saddressZip" placeholder="ZIP" required="true" /> <br />
+								<select id="stype" required="true">
+									<c:forEach var="t" items="${clientt}">
+										<option value="${t.clientTypeId}"><c:out value="${t.clientType}"/></option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<input id="" type="button" class="btn btn-success" value="Update" />
+							<input id="supdate" type="button" class="btn btn-success" value="Update" />
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 				</div>
@@ -99,29 +122,38 @@
 					</div>
 					<form action="" method="post">
 						<div class="modal-body">
-							<table>
-								<thead>
-									<tr>
-										<th>Client Name</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<input type="radio" name="retailName" value="1" checked>Walmart<br>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<input type="radio" name="retailName" value="2" checked>K-Mart<br>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+							<div>
+								Client Name
+								<select id="retailers">
+								</select><br />
+							</div>
+							<div>
+								<input type="text" id="rclientName" placeholder="Name" required="true" /> <br />
+								<input type="text" id="rclientEmail" placeholder="Email" required="true" /> <br />
+								<input type="text" id="rpointOfContactName" placeholder="Point of Contact Name" required="true" /> <br />
+								<input type="text" id="rclientPhone" placeholder="Phone Number" required="true" /> <br />
+								<input type="text" id="rclientFax" placeholder="Fax" required="true" /> <br />
+								<input type="hidden" id="raddressId" />
+								<input type="text" id="rstreetAddress1" placeholder="Street Address 1" required="true" /> <br />
+								<input type="text" id="rstreetAddress2" placeholder="Street Address 2" required="true" /> <br />
+								<input type="text" id="raddressCity" placeholder="City" required="true" /> <br />
+								<select id="rstateId" required="true">
+									<c:forEach var="t" items="${saabb}">
+										<option value="${t.abbrvId}"><c:out value="${t.stateAbbrv}"/></option>
+									</c:forEach>
+								</select>
+								<br />
+								<input type="text" id="raddressZip" placeholder="ZIP" required="true" /> <br />
+								<select id="rtype" required="true">
+									<c:forEach var="t" items="${clientt}">
+										<option value="${t.clientTypeId}"><c:out value="${t.clientType}"/></option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
 						<div class="modal-footer">
+							<input class="rupdate" type="button" class="btn btn-success" value="Update" />
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-success">Update</button>
 						</div>
 					</form>
 				</div>
@@ -141,7 +173,57 @@ $(document).ready(function(){
     });
 });
 $(document).ready(function(){
-	setInterval(function(){
+	$("#suppliers").change(function(){
+		$.ajax({
+			// accepts application/json
+			headers: {          
+	    		Accept : "application/json; charset=utf-8"
+    		}, 
+			url: "http://localhost:7001/PIMS-web2/fillSupplier.do?id="+$("#suppliers").val(),
+			method: "GET",
+			success: function(resp){
+				$("#sclientName").val(resp.clientName);
+				$("#sclientEmail").val(resp.clientEmail);
+				$("#spointOfContactName").val(resp.pointOfContactName);
+				$("#sclientPhone").val(resp.clientPhone);
+				$("#sclientFax").val(resp.clientFax);
+				$("#saddressId").val(resp.addressId.addressId);
+				$("#sstreetAddress1").val(resp.addressId.streetAddress1);
+				$("#sstreetAddress2").val(resp.addressId.streetAddress2);
+				$("#saddressCity").val(resp.addressId.addressCity);
+				$("#sstateId").val(resp.addressId.stateId.abbrvId);
+				$("#saddressZip").val(resp.addressId.addressZip);
+				$("#stype").val(resp.clientTypeId.clientTypeId);
+			}
+		});
+	});
+	$("#retailers").change(function(){
+		$.ajax({
+			// accepts application/json
+			headers: {          
+	    		Accept : "application/json; charset=utf-8"
+    		}, 
+			url: "http://localhost:7001/PIMS-web2/fillRetailer.do?id="+$("#retailers").val(),
+			method: "GET",
+			success: function(resp){
+				$("#rclientName").val(resp.clientName);
+				$("#rclientEmail").val(resp.clientEmail);
+				$("#rpointOfContactName").val(resp.pointOfContactName);
+				$("#rclientPhone").val(resp.clientPhone);
+				$("#rclientFax").val(resp.clientFax);
+				$("#raddressId").val(resp.addressId.addressId);
+				$("#rstreetAddress1").val(resp.addressId.streetAddress1);
+				$("#rstreetAddress2").val(resp.addressId.streetAddress2);
+				$("#raddressCity").val(resp.addressId.addressCity);
+				$("#rstateId").val(resp.addressId.stateId.abbrvId);
+				$("#raddressZip").val(resp.addressId.addressZip);
+				$("#rtype").val(resp.clientTypeId.clientTypeId);
+			}
+		});
+	});
+});
+$(document).ready(function(){
+	$("#updateSModal").click(function(){
 		$.ajax({
 			// accepts application/json
 			headers: {          
@@ -150,14 +232,30 @@ $(document).ready(function(){
 			url: "http://localhost:7001/PIMS-web2/showSupplier.do",
 			method: "GET",
 			success: function(resp){
-				$("#suppliers").html("<tr><th>Client Name</th></tr>");
 				$.each(resp, function(i, item){
 					$("#suppliers").append(
-					"<tr><td><input type='radio' name='supplyName' value='"+item.clientId+"' checked>"+item.clientName+"</td></tr>");
+					"<option name='supplyName' value='"+item.clientId+"'>"+item.clientName+"</option>");
 				});
 			}
 		});
-	}, 2000);
+	});
+	$("#updateRModal").click(function(){
+		$.ajax({
+			// accepts application/json
+			headers: {          
+	    		Accept : "application/json; charset=utf-8"
+    		}, 
+			url: "http://localhost:7001/PIMS-web2/showRetailer.do",
+			method: "GET",
+			success: function(resp){
+				$("#retailers").html("<tr><th>Client Name</th></tr>");
+				$.each(resp, function(i, item){
+					$("#retailers").append(
+					"<option name='retailName' value='"+item.clientId+"' checked>"+item.clientName+"<option>");
+				});
+			}
+		});
+	});
 });
 $(document).ready(function(){
     $("#add").click(function(){
@@ -197,7 +295,66 @@ $(document).ready(function(){
 				alert("Added person successfully!");
 			}
 		});
+	});
+	$("#supdate").click(function(){
+		var id = $("#suppliers").val();
+		var name = $("#sclientName").val();
+		var email = $("#sclientEmail").val();
+		var contactName = $("#spointOfContactName").val();
+		var phone = $("#sclientPhone").val();
+		var fax = $("#sclientFax").val();
+		var aId = $("#saddressId").val();
+		var address1 = $("#sstreetAddress1").val();
+		var address2 = $("#sstreetAddress2").val();
+		var city = $("#saddressCity").val();
+		var state = $("#sstateId").val();
+		var zip = $("#saddressZip").val();
+		var type = $("#stype").val();
 		
+		$.ajax({
+			// contentType application/json
+			headers: {          
+    			"Content-Type": "application/json; charset=utf-8"
+    		},
+			url: "http://localhost:7001/PIMS-web2/updateClient.do",
+			method: "POST",
+			data: JSON.stringify({
+				clientId : id, clientName : name, clientEmail : email, pointOfContactName : contactName, clientPhone : phone, clientFax : fax, newaddressId : aId, newAddress1 : address1, newAddress2 : address2, newCity : city, newState : state, newZip : zip, newType : type 
+			}),
+			success: function(){
+				alert("Updated a supplier successfully!");
+			}
+		});
+	});
+	$("#rupdate").click(function(){
+		var id = $("#retailers").val();
+		var name = $("#rclientName").val();
+		var email = $("#rclientEmail").val();
+		var contactName = $("#rpointOfContactName").val();
+		var phone = $("#rclientPhone").val();
+		var fax = $("#rclientFax").val();
+		var aId = $("#raddressId").val();
+		var address1 = $("#rstreetAddress1").val();
+		var address2 = $("#rstreetAddress2").val();
+		var city = $("#raddressCity").val();
+		var state = $("#rstateId").val();
+		var zip = $("#raddressZip").val();
+		var type = $("#rtype").val();
+		
+		$.ajax({
+			// contentType application/json
+			headers: {          
+    			"Content-Type": "application/json; charset=utf-8"
+    		},
+			url: "http://localhost:7001/PIMS-web2/updateClient.do",
+			method: "POST",
+			data: JSON.stringify({
+				clientId : id, clientName : name, clientEmail : email, pointOfContactName : contactName, clientPhone : phone, clientFax : fax, newaddressId : aId, newAddress1 : address1, newAddress2 : address2, newCity : city, newState : state, newZip : zip, newType : type 
+			}),
+			success: function(){
+				alert("Updated a retailer successfully!");
+			}
+		});
 	});
 });
 </script>
