@@ -60,7 +60,7 @@
 				<td></td>
 				<td></td>
 				<td>SubTotal</td>
-				<td></td>
+				<td><input id="subttl" readonly="readonly"/></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -68,7 +68,7 @@
 				<td></td>
 				<td></td>
 				<td>Tax</td>
-				<td></td>
+				<td><input id="tax" readonly="readonly"/></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -76,7 +76,7 @@
 				<td></td>
 				<td></td>
 				<td>Total</td>
-				<td></td>
+				<td><input id="grandttl" readonly="readonly"/></td>
 			</tr>
 		</table>
 	</div>
@@ -92,11 +92,11 @@
 				method: "GET",
 				success: function(resp){
 					$("#invoice tr:last").after("<tr><td><span class='del'>[-]</span></td>"
-					+"<td><input id='"+resp.productUpc+" prod'readonly='readonly' value='"+resp.productName+"'/></td>"
-					+"<td><input id='"+resp.productUpc+" desc' readonly='readonly' value='"+resp.productDescription+"'/></td>"
-					+"<td><input id='"+resp.productUpc+" price' readonly='readonly' value='"+resp.retailPrice+"'/></td>"
-					+"<td><input id='"+resp.productUpc+" qty'/></td>"
-					+"<td><input id='"+resp.productUpc+" total' readonly='readonly'/></td></tr>");
+					+"<td><input id='"+resp.productUpc+"prod'readonly='readonly' value='"+resp.productName+"'/></td>"
+					+"<td><input id='"+resp.productUpc+"desc' readonly='readonly' value='"+resp.productDescription+"'/></td>"
+					+"<td><input id='"+resp.productUpc+"price' readonly='readonly' value='"+resp.retailPrice+"'/></td>"
+					+"<td><input id='"+resp.productUpc+"qty'/></td>"
+					+"<td><input id='"+resp.productUpc+"total' readonly='readonly'/></td></tr>");
 				}
 			});
 		});
@@ -104,6 +104,18 @@
 	$(document).ready(function(){
 		$("#invoice").on("click", ".del", function(){
 			$(this).parent().parent().remove();
+		});
+		$("#invoice").on("keyup", "[id$=qty]", function(){
+			var sum = 0;
+			var qty = $(this).val();
+			var price = $(this).parent().prev().children("[id$=price]").val();
+			$(this).parent().next().children("[id$=total").val(qty*price);
+			$("[id$=total").each(function(){
+				sum += Number($(this).val());
+			});
+			$("#subttl").val(sum.toFixed(2));
+			$("#tax").val((sum*.06).toFixed(2));
+			$("#grandttl").val((sum*1.06).toFixed(2));
 		});
 	});
 </script>
