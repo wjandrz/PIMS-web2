@@ -31,7 +31,7 @@ import com.revature.database.DataLayer;
 import com.revature.database.StateAbbrvDAO;
 
 @Controller
-public class ClientController  implements ServletContextAware, InitializingBean {
+public class ClientController implements ServletContextAware, InitializingBean {
 	
 	@Autowired
 	private ServletContext servletContext; // instance var

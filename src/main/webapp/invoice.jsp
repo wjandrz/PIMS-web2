@@ -23,7 +23,19 @@
 </head>
 <body>
 	<div class="container theme-showcase" role="main">
-		<table class="table table-hover">
+		<label for="clients">Clients</label>
+		<select id="clients">
+			<c:forEach var="t" items="${client}">
+				<option value="${t.clientId}"><c:out value="${t.clientName}"/></option>
+			</c:forEach>
+		</select>
+		<label for="products">Products</label>
+		<select id="products">
+			<c:forEach var="t" items="${prod}">
+				<option value="${t.productUpc}"><c:out value="${t.productName}"/></option>
+			</c:forEach>
+		</select>
+		<table id="invoice" class="table table-hover">
 			<tr>
 				<th></th>
 				<th>Product</th>
@@ -32,13 +44,15 @@
 				<th>QTY</th>
 				<th>Total</th>
 			</tr>
-			<tr id="row1">
-				<td><span class="add">[+]</span>	<span class="del">[-]</span></td>
-				<td><input id="product"/></td>
-				<td><input id="desc" readonly="readonly" /></td>
-				<td><input id="price" readonly="readonly" /></td>
-				<td><input id="qty" /></td>
-				<td><input id="total" readonly="readonly"/></td>
+		</table>
+		<table class="table table-hover">
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
 			</tr>
 			<tr>
 				<td></td>
@@ -67,6 +81,31 @@
 		</table>
 	</div>
 <script type="text/javascript">
+	$(document).ready(function(){
+		$("#products").change(function(){
+			$.ajax({
+				// accepts application/json
+				headers: {          
+		    		Accept : "application/json; charset=utf-8"
+    			}, 
+				url: "http://localhost:7001/PIMS-web2/fillLine.do?value="+$("#products").val(),
+				method: "GET",
+				success: function(resp){
+					$("#invoice tr:last").after("<tr><td><span class='del'>[-]</span></td>"
+					+"<td><input id='"+resp.productUpc+" prod'readonly='readonly' value='"+resp.productName+"'/></td>"
+					+"<td><input id='"+resp.productUpc+" desc' readonly='readonly' value='"+resp.productDescription+"'/></td>"
+					+"<td><input id='"+resp.productUpc+" price' readonly='readonly' value='"+resp.retailPrice+"'/></td>"
+					+"<td><input id='"+resp.productUpc+" qty'/></td>"
+					+"<td><input id='"+resp.productUpc+" total' readonly='readonly'/></td></tr>");
+				}
+			});
+		});
+	});
+	$(document).ready(function(){
+		$("#invoice").on("click", ".del", function(){
+			$(this).parent().parent().remove();
+		});
+	});
 </script>
 </body>
 </html>

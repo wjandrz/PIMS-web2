@@ -2,7 +2,18 @@ package com.revature.beans;
 
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="IMS_PRODUCT_CATEGORY")
@@ -21,6 +32,7 @@ public class ProductCategory {
 		@JoinTable(name="PRODUCT_CATEGORIES", 
 				joinColumns=@JoinColumn(name="CATEGORY_ID"),
 				inverseJoinColumns=@JoinColumn(name="PRODUCT_UPC"))
+		@JsonIgnore
 	private Set<Product> products;
 
 	public int getCategoryId() {
