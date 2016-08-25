@@ -46,6 +46,12 @@ public class ProductCategory {
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
+	
+	public ProductCategory(int categoryId, String categoryDescription) {
+		super();
+		this.categoryId = categoryId;
+		this.categoryDescription = categoryDescription;
+	}
 
 
 	public ProductCategory(int categoryId, String categoryDescription, Set<Product> products) {

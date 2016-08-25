@@ -10,7 +10,7 @@ public class StateAbbrv {
 		@Column(name="ABBRV_ID", nullable=false)
 		@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="stAbbrvSeq")
 		@SequenceGenerator(name="stAbbrvSeq", sequenceName="STATE_ABBRV_SEQ",initialValue=1, allocationSize=1)
-	private int abbrvId;
+	private Integer abbrvId;
 	
 		@Column(name="STATE_NAME", nullable=false)
 	private String stateName;
@@ -18,7 +18,7 @@ public class StateAbbrv {
 		@Column(name="STATE_ABBRV", nullable=false)
 	private String stateAbbrv;
 	
-	public int getAbbrvId() {
+	public Integer getAbbrvId() {
 		return abbrvId;
 	}
 	public void setAbbrvId(int abbrvId) {
@@ -36,7 +36,7 @@ public class StateAbbrv {
 	public void setStateAbbrv(String stateAbbrv) {
 		this.stateAbbrv = stateAbbrv;
 	}
-	public StateAbbrv(int abbrvId, String stateName, String stateAbbrv) {
+	public StateAbbrv(Integer abbrvId, String stateName, String stateAbbrv) {
 		super();
 		this.abbrvId = abbrvId;
 		this.stateName = stateName;

@@ -43,6 +43,18 @@ public class ProductDAO {
 		query.setInteger("upc", prod.getProductUpc());
 		return (Product) query.uniqueResult();
 	}
+	
+	public Product getProductById(int upc){
+		Query query = session.createQuery("from Product where productUpc = :upc");
+		query.setInteger("upc", upc);
+		return (Product) query.uniqueResult();
+	}
+	
+	public Product getProductByShortName(String shortName){
+		Query query = session.createQuery("from Product where shortName = :sName");
+		query.setString("sName", shortName);
+		return (Product) query.uniqueResult();
+	}
 
 
 	public void insert(Object obj){

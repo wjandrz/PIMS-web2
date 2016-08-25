@@ -1,11 +1,15 @@
 package com.revature.database;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
+import com.revature.beans.Product;
 import com.revature.beans.ProductCategory;
 
 public class ProductCategoryDAO {
@@ -19,14 +23,19 @@ public class ProductCategoryDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<ProductCategory> getAllProductCategories(){
-		Query query = session.createQuery("from ProductCategory");
-		category = query.list();
-		return category;
+		Criteria criteria = session.createCriteria(ProductCategory.class);
+		return criteria.list();
 	}
 	
 	public ProductCategory getProductCategoryById(ProductCategory cat){
 		Query query = session.createQuery("from ProductCategory where categoryId = :id");
 		query.setInteger("id", cat.getCategoryId());
+		return (ProductCategory) query.uniqueResult();
+	}
+	
+	public ProductCategory getProductCategoryById(int id){
+		Query query = session.createQuery("from ProductCategory where categoryId = :id");
+		query.setInteger("id", id);
 		return (ProductCategory) query.uniqueResult();
 	}
 
@@ -36,18 +45,10 @@ public class ProductCategoryDAO {
 		session.save(obj);
 	}
 	
-	public void updateProductCategory(ProductCategory cat){
-		Query query = session.createQuery("update ProductCategory set categoryDescription= :description "
-				+" where categoryId = :id");
-		query.setString("description", cat.getCategoryDescription());
-		query.setInteger("id", cat.getCategoryId());
-		query.executeUpdate();
-	}
-	
-	public void deleteProductCategory(ProductCategory cat){
-		Query query = session.createQuery("delete ProductCategory where categoryId = :id");
-		query.setInteger("id", cat.getCategoryId());
-		query.executeUpdate();		
+	public ProductCategory getProductCategoryByDescription(String description){
+		Criteria criteria = session.createCriteria(ProductCategory.class);
+		criteria.add(Restrictions.eq("categoryDescription", description));
+		return (ProductCategory) criteria.uniqueResult();
 	}
 	
 }
