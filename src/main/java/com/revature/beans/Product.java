@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+
 @Entity
 @Table(name="IMS_PRODUCT")
 public class Product {
@@ -66,7 +68,8 @@ public class Product {
 		this.strRetail = strRetail;
 		this.strQOH = strQOH;
 		this.strProdCat = strProdCat;
-	}
+	}	
+	
 	public String getStrName() {
 		return strName;
 	}
@@ -153,6 +156,28 @@ public class Product {
 		this.quantityOnHand = quantityOnHand;
 		this.productCategories = productCategories;
 	}
+	
+	////////////////////////////////////////
+	//		Used for Update
+	////////////////////////////////////////
+	public Product(int productUpc, String productName, String productDescription, String shortName, double unitCost,
+			String packSize, int reorderQuantity, double retailPrice,
+			int quantityOnHand, Set<ProductCategory> productCategories) {
+		super();
+		this.productUpc = productUpc;
+		this.productName = productName;
+		this.productDescription = productDescription;
+		this.shortName = shortName;
+		this.unitCost = unitCost;
+		this.packSize = packSize;
+		this.reorderQuantity = reorderQuantity;
+		this.retailPrice = retailPrice;
+//		this.productWeight = productWeight;
+		this.quantityOnHand = quantityOnHand;
+		this.productCategories = productCategories;
+	}
+	
+	
 		
 	public int getQuantityOnHand() {
 		return quantityOnHand;
@@ -231,6 +256,16 @@ public class Product {
 	public void setProductCategories(Set<ProductCategory> productCategories) {
 		this.productCategories = productCategories;
 	}
+	
+	///////////////////////////////////////////
+	//		GET PRODUCT FOR DELETE
+	///////////////////////////////////////////
+	public Product(int productUpc){
+		this.productUpc = productUpc;
+	}
+	
+	
+	
 	@Override
 	public String toString() {
 		return "Product [productUpc=" + productUpc + ", productName=" + productName + ", productDescription="

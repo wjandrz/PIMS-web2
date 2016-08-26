@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.revature.beans.Product;
 
@@ -62,7 +63,7 @@ public class ProductDAO {
 		session.save(obj);
 	}
 	
-	public void updateProduct(Product prod){
+	public Product updateProduct(Product prod){
 		Query query = session.createQuery("update Product set productName= :name, productDescription= :description, "
 				+"shortName= :short, unitCost= :unit, packSize= :size, reorderQuantity= :reorder, " 
 				+"retailPrice= :retail, productWeight= :weight where productUpc = :upc");
@@ -76,12 +77,19 @@ public class ProductDAO {
 		query.setDouble("weight", prod.getProductWeight());
 		query.setInteger("upc", prod.getProductUpc());
 		query.executeUpdate();
+		return prod;
 	}
 	
-	public void deleteProduct(Product prod){
-		Query query = session.createQuery("delete Product where productUpc = :upc");
-		query.setInteger("upc", prod.getProductUpc());
-		query.executeUpdate();		
+	public void deleteProduct(int id){
+		Transaction tx = session.beginTransaction();
+		try{
+			Query query = session.createQuery("DELETE Product WHERE productUpc = :id");
+			query.setInteger("id", id);
+			query.executeUpdate();
+			tx.commit();
+		}catch (Throwable t) {
+			tx.rollback();
+		}
 	}
 	
 }

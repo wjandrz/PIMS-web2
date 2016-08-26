@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.revature.PIMS.SessionFactoryManager;
 import com.revature.beans.Product;
 import com.revature.beans.ProductCategory;
+import com.revature.beans.newClient;
 import com.revature.database.DataLayer;
 import com.revature.database.ProductCategoryDAO;
 import com.revature.database.ProductDAO;
@@ -51,6 +52,8 @@ public class ProductController implements ServletContextAware, InitializingBean 
 		ProductCategoryDAO prodCatDAO = new ProductCategoryDAO(session);
 		ProductDAO prodDAO = new ProductDAO(session);
 		
+		
+		
 		double unitCost = Double.parseDouble(newProduct.getStrUnitCost()); 
 		int reQuat = Integer.parseInt(newProduct.getStrReQuat());
 		double retailCost = Double.parseDouble(newProduct.getStrRetail());
@@ -80,21 +83,76 @@ public class ProductController implements ServletContextAware, InitializingBean 
 		}
 		
 		
-//		req.getParameterValues(")
+		products.add(newProd);
+		System.out.println(newProduct.toString());
+		
+		this.servletContext.setAttribute("products", products); // update products
+	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	///						UPDATE PRODUCT
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	@RequestMapping(value="updateProduct.do", method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public void updateProduct(
+			HttpServletRequest req, 
+			HttpServletResponse resp,
+			@Valid @RequestBody Product newProduct){
+		
+		Vector<Product> products = (Vector<Product>) this.servletContext.getAttribute("products");
+		ProductCategoryDAO prodCatDAO = new ProductCategoryDAO(session);
+		ProductDAO prodDAO = new ProductDAO(session);
+		
+		
+		
+		double unitCost = Double.parseDouble(newProduct.getStrUnitCost()); 
+		int reQuat = Integer.parseInt(newProduct.getStrReQuat());
+		double retailCost = Double.parseDouble(newProduct.getStrRetail());
+		int qoh = Integer.parseInt(newProduct.getStrQOH());
+		String[] prodCats = newProduct.getStrProdCat();
+		Set<ProductCategory> pCat = new HashSet<>();
+		
+		for(int i=0;i<prodCats.length;i++){
+			System.out.println(prodCats[i]);
+			ProductCategory prCat = prodCatDAO.getProductCategoryById(Integer.parseInt(prodCats[i]));
+			pCat.add(prCat);
+		}
+		
+		Product newProd = new Product(newProduct.getProductUpc(), newProduct.getStrName(), newProduct.getStrDesc(), newProduct.getStrShName(),
+				unitCost, newProduct.getStrPackSize(), reQuat, retailCost, qoh, pCat);
+		
+		System.out.println(newProd.toString());			
+		dl.createRecord(newProd);
+		
+		Product tempProd = prodDAO.getProductByShortName(newProd.getShortName());
+		Set<Product> tempProdSet = new HashSet<Product>();
+		tempProdSet.add(tempProd);
+		
+		for(ProductCategory pc : pCat){
+			pc.setProducts(tempProdSet);
+			dl.createRecord(pc);
+		}
+		
 		
 		products.add(newProd);
 		System.out.println(newProduct.toString());
 		
 		this.servletContext.setAttribute("products", products); // update products
-		
-//		ModelAndView mv = new ModelAndView();
-//		mv.setViewName("view"); // view.jsp IRVR
-//		mv.addObject("success", "Successfully added product!"); // request-scoped variables
-		
-		//return "updateproduct";
 	}
 	
-	@RequestMapping(value="fillProduct.do", method=RequestMethod.GET, consumes="application/json")
+	@RequestMapping(value="removeProduct.do", method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public void removeClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody Product product){
+		ProductDAO prodDao = new ProductDAO(session);
+		Product prod = prodDao.getProductById(product.getProductUpc());
+		prod.setProductCategories(null);
+		dl.createRecord(prod);
+		prodDao.deleteProduct(prod.getProductUpc());
+	}
+	
+	@RequestMapping(value="fillProduct.do", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
 	public Product getProduct(@RequestParam(value="value") int value){
 		ProductDAO productDAO = new ProductDAO(session);
 		return productDAO.getProductById(value);
