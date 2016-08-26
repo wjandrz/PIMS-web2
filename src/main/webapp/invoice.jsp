@@ -176,7 +176,7 @@
 			var sum = 0;
 			var qty = $(this).val();
 			var price = $(this).parent().prev().children("[id$='price']").val();
-			$(this).parent().next().children("[id$='total']").val(qty*price);
+			$(this).parent().next().children("[id$='total']").val((qty*price).toFixed(2));
 			$("[id$='total']").each(function(){
 				sum += Number($(this).val());
 			});
@@ -188,7 +188,7 @@
 			var sum = 0;
 			var qty = $(this).val();
 			var price = $(this).parent().prev().children("[id$='price']").val();
-			$(this).parent().next().children("[id$='total']").val(qty*price);
+			$(this).parent().next().children("[id$='total']").val((qty*price).toFixed(2));
 			$("[id$='total']").each(function(){
 				sum += Number($(this).val());
 			});
