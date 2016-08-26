@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.revature.PIMS.SessionFactoryManager;
 import com.revature.beans.Product;
 import com.revature.beans.ProductCategory;
-import com.revature.beans.newClient;
+import com.revature.beans.NewClient;
 import com.revature.database.DataLayer;
 import com.revature.database.ProductCategoryDAO;
 import com.revature.database.ProductDAO;
