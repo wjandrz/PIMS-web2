@@ -16,10 +16,17 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="css/external.css" />
+<link rel="stylesheet" type="text/css" href="css/external.css" />
 </head>
 <%@ include file="navbar.jsp"%>
-<body>
+<body style="background-color:#ffdb4d;">
+
+<div class="container theme-showcase" role="main">
+	<h2>Welcome to the WAZP Inventory Management System</h2>
+	<p>With this system you are allowed to manipulate client information, manipulate product information and submit invoices.
+	Shortly, you will be able to generate reports to show you past sales along with top sellers!
+	</p>
+</div>
 
 </body>
 </html>
