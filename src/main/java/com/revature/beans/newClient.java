@@ -1,6 +1,6 @@
 package com.revature.beans;
 
-public class newClient {
+public class NewClient {
 
 		private int clientId;
 		private String clientName;
@@ -113,7 +113,7 @@ public class newClient {
 		this.newType = newType;
 	}
 	
-	public newClient(String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+	public NewClient(String clientName, String clientEmail, String pointOfContactName, String clientPhone,
 			String clientFax, String newAddress1, String newAddress2, String newCity, int newState, String newZip,
 			int newType) {
 		super();
@@ -129,7 +129,7 @@ public class newClient {
 		this.newZip = newZip;
 		this.newType = newType;
 	}
-	public newClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+	public NewClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
 			String clientFax, Address addressId, ClientType clientTypeId, String newAddress1, String newAddress2,
 			String newCity, int newState, String newZip, int newType) {
 		super();
@@ -149,7 +149,7 @@ public class newClient {
 		this.newType = newType;
 	}
 	
-	public newClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
+	public NewClient(int clientId, String clientName, String clientEmail, String pointOfContactName, String clientPhone,
 			String clientFax, int newaddressId, String newAddress1,	String newAddress2, String newCity, int newState, String newZip, int newType) {
 		super();
 		this.clientId = clientId;
@@ -167,12 +167,12 @@ public class newClient {
 		this.newType = newType;
 	}
 	
-	public newClient(int clientId, int newaddressId) {
+	public NewClient(int clientId, int newaddressId) {
 		super();
 		this.clientId = clientId;
 		this.newaddressId = newaddressId;
 	}
-	public newClient() {
+	public NewClient() {
 		super();
 	}
 }

@@ -8,27 +8,14 @@ public class POLine {
 	
 		@EmbeddedId
 	private POCompKey compKey;
-		@ManyToOne
-	    @MapsId("orderNumber")
-	    private PurchaseOrder orderNumber;
 		@Column(name="UNIT_PRICE", nullable=false)
 	private double unitPrice;
 		@Column(name="QUANTITY_ORDERED", nullable=false)
 	private int quantityOrdered;
 		@ManyToOne
 		@JoinColumn(name="PRODUCT_UPC", nullable=false)
-	private Product productUpc;
-		@ManyToOne
-		@MapsId("orderNumber")
-	private PurchaseOrder order;
-		
+	private Product productUpc;		
 	
-	public PurchaseOrder getOrder() {
-			return order;
-		}
-		public void setOrder(PurchaseOrder order) {
-			this.order = order;
-		}
 	public POCompKey getCompKey() {
 			return compKey;
 		}

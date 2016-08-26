@@ -15,8 +15,6 @@ public class POCompKey implements Serializable{
 	private PurchaseOrder orderNumber;
 
 		@Column(name="LINE_NUMBER", nullable=false)
-		@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="poLineSeq")
-		@SequenceGenerator(name="poLineSeq", sequenceName="PO_LINE_SEQ",initialValue=1, allocationSize=1)
 	private Integer lineNumber;
 
 

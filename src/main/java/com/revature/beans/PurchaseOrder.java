@@ -75,6 +75,15 @@ public class PurchaseOrder {
 		this.poTotal = poTotal;
 		this.clientId = clientId;
 	}
+	public PurchaseOrder(double subtotal, Date purchaseDate, double taxAmount, double poTotal,
+			Client clientId) {
+		super();
+		this.subtotal = subtotal;
+		this.purchaseDate = purchaseDate;
+		this.taxAmount = taxAmount;
+		this.poTotal = poTotal;
+		this.clientId = clientId;
+	}
 	public PurchaseOrder() {
 		super();
 		// TODO Auto-generated constructor stub

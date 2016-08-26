@@ -30,6 +30,15 @@ public class PurchaseOrderDAO {
 		return (PurchaseOrder) query.uniqueResult();
 	}
 	
+	public PurchaseOrder getLastPurchaseOrder(){
+		/*Query query = session.createQuery("from PurchaseOrder where orderNumber = "
+				+ "(select max(orderNumber) from PurchaseOrder");*/
+		Query query2 = session.createQuery("select max(orderNumber) as MAXNUM from PurchaseOrder");
+		Query query = session.createQuery("from PurchaseOrder where orderNumber = :maxOrder");
+		query.setInteger("maxOrder", (int) query2.uniqueResult());
+		return (PurchaseOrder) query.uniqueResult();
+	}
+	
 	public void updatePurchaseOrder(PurchaseOrder order){
 		Query query = session.createQuery("update PurchaseOrder set subtotal= :sub, purchaseDate= :date, "
 				+"taxAmount= :tax, poTotal= :total, clientId= :client where orderNumber = :orderNum");

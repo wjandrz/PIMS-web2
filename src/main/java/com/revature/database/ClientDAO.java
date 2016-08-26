@@ -24,6 +24,11 @@ public class ClientDAO {
 		Query query = session.createQuery("from Client");
 		return query.list();
 	}
+	public Client getClientsbyId(int id){
+		Query query = session.createQuery("FROM Client WHERE clientId = :id ");
+		query.setInteger("id", id);
+		return (Client) query.uniqueResult();
+	}
 	public Client getClientsbyIdSupply(int id){
 		Query query = session.createQuery("FROM Client WHERE clientId = :id "
 				+ "AND clientTypeId = :type");

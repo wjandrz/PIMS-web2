@@ -29,6 +29,7 @@
 				<option value="${t.clientId}"><c:out value="${t.clientName}"/></option>
 			</c:forEach>
 		</select>
+		<input type="hidden" id="clienttype"/>
 		<label for="products">Products</label>
 		<select id="products">
 			<c:forEach var="t" items="${prod}">
@@ -67,7 +68,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td>Tax</td>
+				<td>Tax(6%)</td>
 				<td><input id="tax" readonly="readonly"/></td>
 			</tr>
 			<tr>
@@ -79,6 +80,7 @@
 				<td><input id="grandttl" readonly="readonly"/></td>
 			</tr>
 		</table>
+		<input type="button" class="btn btn-success" id="submit" value="Submit"/>
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -91,26 +93,103 @@
 				url: "http://localhost:7001/PIMS-web2/fillLine.do?value="+$("#products").val(),
 				method: "GET",
 				success: function(resp){
-					$("#invoice tr:last").after("<tr><td><span class='del'>[-]</span></td>"
-					+"<td><input id='"+resp.productUpc+"prod'readonly='readonly' value='"+resp.productName+"'/></td>"
-					+"<td><input id='"+resp.productUpc+"desc' readonly='readonly' value='"+resp.productDescription+"'/></td>"
-					+"<td><input id='"+resp.productUpc+"price' readonly='readonly' value='"+resp.retailPrice+"'/></td>"
-					+"<td><input id='"+resp.productUpc+"qty'/></td>"
-					+"<td><input id='"+resp.productUpc+"total' readonly='readonly'/></td></tr>");
+					$("#invoice tr:last").after("<tr class='line'><td><span class='del'>[-]</span></td>"
+					+"<td class='prod'><input type='hidden' id='"+resp.productUpc+"prod' value='"+resp.productUpc+"'/><input id='"+resp.productName+"name'readonly='readonly' value='"+resp.productName+"'/></td>"
+					+"<td class='desc'><input id='"+resp.productUpc+"desc' readonly='readonly' value='"+resp.productDescription+"'/></td>"
+					+"<td class='price'><input id='"+resp.productUpc+"price' readonly='readonly' value='"+resp.retailPrice+"'/></td>"
+					+"<td class='qty'><input id='"+resp.productUpc+"qty'/></td>"
+					+"<td class='total'><input id='"+resp.productUpc+"total' readonly='readonly'/></td></tr>");
 				}
+			});
+		});
+		/*$("#clients").change(function(){
+			$.ajax({
+				// accepts application/json
+				headers: {          
+	    			Accept : "application/json; charset=utf-8"
+    			}, 
+				url: "http://localhost:7001/PIMS-web2/getclientType.do?value="+$("#clients").val(),
+				method: "GET",
+				success: function(resp){
+					$("#sclientName").val(resp.clientName);
+					$("#sclientEmail").val(resp.clientEmail);
+					$("#spointOfContactName").val(resp.pointOfContactName);
+					$("#sclientPhone").val(resp.clientPhone);
+					$("#sclientFax").val(resp.clientFax);
+					$("#saddressId").val(resp.addressId.addressId);
+					$("#sstreetAddress1").val(resp.addressId.streetAddress1);
+					$("#sstreetAddress2").val(resp.addressId.streetAddress2);
+					$("#saddressCity").val(resp.addressId.addressCity);
+					$("#sstateId").val(resp.addressId.stateId.abbrvId);
+					$("#saddressZip").val(resp.addressId.addressZip);
+					$("#stype").val(resp.clientTypeId.clientTypeId);
+				}
+			});
+		});*/
+	});
+	$(document).ready(function(){
+		$("#submit").click(function(){
+			var clientId = $("#clients").val();
+			var subtotal = $("#subttl").val(); 
+			var tax = $("#tax").val();
+			var total = $("#grandttl").val();
+			$.ajax({
+				// contentType application/json
+				headers: {          
+	    			"Content-Type": "application/json; charset=utf-8"
+    			},
+				url: "http://localhost:7001/PIMS-web2/makeInvoice.do",
+				method: "POST",
+				data: JSON.stringify({
+					subtotal : subtotal, taxAmount : tax, poTotal : total, clientId : clientId
+				}),
+				success: function(){
+					//alert("Invoice added successfully!");
+				}
+			});
+			var i=1;
+			$("tr.line").each(function(){
+				var unitprice = $(this).find("[id$='price']").val();
+				var quantity = $(this).children(".qty").children("[id$='qty']").val();
+				var productupc = $(this).children(".prod").children("[id$='prod']").val();
+				$.ajax({
+					// contentType application/json
+					headers: {          
+		    			"Content-Type": "application/json; charset=utf-8"
+    				},
+					url: "http://localhost:7001/PIMS-web2/addLine.do",
+					method: "POST",
+					data: JSON.stringify({
+						productUpc : productupc, unitPrice : unitprice, qty : quantity, lineNumber : i
+					}),
+					success: function(){
+						alert("Invoice added successfully!");
+					}
+				});
+				i++;
 			});
 		});
 	});
 	$(document).ready(function(){
 		$("#invoice").on("click", ".del", function(){
 			$(this).parent().parent().remove();
-		});
-		$("#invoice").on("keyup", "[id$=qty]", function(){
 			var sum = 0;
 			var qty = $(this).val();
-			var price = $(this).parent().prev().children("[id$=price]").val();
-			$(this).parent().next().children("[id$=total").val(qty*price);
-			$("[id$=total").each(function(){
+			var price = $(this).parent().prev().children("[id$='price']").val();
+			$(this).parent().next().children("[id$='total']").val(qty*price);
+			$("[id$='total']").each(function(){
+				sum += Number($(this).val());
+			});
+			$("#subttl").val(sum.toFixed(2));
+			$("#tax").val((sum*.06).toFixed(2));
+			$("#grandttl").val((sum*1.06).toFixed(2));
+		});
+		$("#invoice").on("keyup", "[id$='qty']", function(){
+			var sum = 0;
+			var qty = $(this).val();
+			var price = $(this).parent().prev().children("[id$='price']").val();
+			$(this).parent().next().children("[id$='total']").val(qty*price);
+			$("[id$='total']").each(function(){
 				sum += Number($(this).val());
 			});
 			$("#subttl").val(sum.toFixed(2));

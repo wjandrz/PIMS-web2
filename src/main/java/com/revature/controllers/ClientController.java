@@ -23,7 +23,7 @@ import com.revature.beans.Address;
 import com.revature.beans.Client;
 import com.revature.beans.ClientType;
 import com.revature.beans.StateAbbrv;
-import com.revature.beans.newClient;
+import com.revature.beans.NewClient;
 import com.revature.database.AddressDAO;
 import com.revature.database.ClientDAO;
 import com.revature.database.ClientTypeDAO;
@@ -53,7 +53,7 @@ public class ClientController implements ServletContextAware, InitializingBean {
 	
 	@RequestMapping(value="addClient.do", method=RequestMethod.POST, consumes="application/json")
 	@ResponseBody
-	public void addClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+	public void addClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody NewClient client){
 
 		DataLayer dataServiceLayer =  new DataLayer();
 		int stateId = client.getNewState();
@@ -69,13 +69,13 @@ public class ClientController implements ServletContextAware, InitializingBean {
 	}
 	@RequestMapping(value="removeClient.do", method=RequestMethod.POST, consumes="application/json")
 	@ResponseBody
-	public void removeClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+	public void removeClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody NewClient client){
 		cdao.delete(client.getClientId());
 		adao.delete(client.getNewaddressId());
 	}
 	@RequestMapping(value="updateClient.do", method=RequestMethod.POST, consumes="application/json")
 	@ResponseBody
-	public void updateClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody newClient client){
+	public void updateClient(HttpServletRequest req, HttpServletResponse resp, @RequestBody NewClient client){
 
 		DataLayer dataServiceLayer =  new DataLayer();
 		int stateId = client.getNewState();
